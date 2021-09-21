@@ -1,0 +1,35 @@
+name: "Deploy to Cloudfront"
+description: "Uploads build to S3 and cloudfront with appropriate setup, invalidations, etc"
+inputs:
+  aws-access-key-id:
+    description: "AWS Access Key ID"
+    required: true
+  aws-secret-access-key:
+    description: "AWS Secret Access Key"
+    required: true
+  aws-region:
+    description: "AWS Region"
+    required: false
+    default: us-east-2
+  path:
+    description: "Path to copy"
+    required: false
+    default: build
+  s3-bucket-name:
+    description: "S3 Bucket Name"
+    required: true
+  cloudfront-distribution-id:
+    description: "Cloudfront Distribution ID"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ inputs.aws-access-key-id }}
+        aws-secret-access-key: ${{ inputs.aws-secret-access-key }}
+        aws-region: ${{ inputs.aws-region }}
+    - shell: bash
+      run: |
+        aws s3 cp ${{ inputs.path }} s3://${{ inputs.s3-bucket-name }} --recursive --include "*"
+        aws cloudfront create-invalidation --distribution-id ${{ inputs.cloudfront-distribution-id }} --paths "/*"

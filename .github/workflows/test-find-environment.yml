@@ -1,0 +1,54 @@
+name: Test
+on:
+  push:
+    paths:
+      - "find-environment/**"
+jobs:
+  Test-Find-Environment:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - event-name: workflow_dispatch
+            ref: master
+            env: prod
+            env-long: production
+            cluster: Prod
+          - event-name: push
+            ref: dev
+            env: dev
+            env-long: dev
+            cluster: Dev
+          - event-name: push
+            ref: dev-adhoc-hello
+            env: dev
+            env-long: dev
+            cluster: Dev
+          - event-name: push
+            ref: master
+            env: uat
+            env-long: uat
+            cluster: Dev
+          - event-name: push
+            ref: uat-adhoc-hello
+            env: uat
+            env-long: uat
+            cluster: Dev
+          # Confirm default works correctly
+          - event-name: other
+            ref: sodifjpoi
+            env: dev
+            env-long: dev
+            cluster: Dev
+    steps:
+      - uses: actions/checkout@v2
+      - id: prod
+        uses: ./find-environment
+        with:
+          event-name: ${{ matrix.event-name }}
+          ref: ${{ matrix.ref }}
+      - name: Test
+        shell: bash
+        run: |
+          if [[ "${{ steps.prod.outputs.env }}" != "${{ matrix.env }}" ]]; then exit "Failed"; fi;
+          if [[ "${{ steps.prod.outputs.cluster }}" != "${{ matrix.cluster }}" ]]; then exit "Failed"; fi;

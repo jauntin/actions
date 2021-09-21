@@ -1,0 +1,35 @@
+name: "Test PHP"
+description: "Runs tests against a built image - PHP-oriented"
+inputs:
+  cmd:
+    description: "The command to run"
+    required: true
+  tag:
+    description: "Cache tag - hash, branch name, etc"
+    required: false
+    default: ${{ github.ref }}
+  outputPath:
+    description: "Where test output is stored"
+    required: false
+    default: |
+      /app/storage/logs
+outputs: {}
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/cache@v2
+      with:
+        path: /app/.composer
+        key: test-cache
+    - uses: actions/cache@v2
+      with:
+        path: |
+          /app/.phpstan.result.cache
+          /app/.phpunit.result.cache
+        key: test-cache-${{ inputs.tag }}
+    - shell: sh
+      run: ${{ inputs.cmd }}
+    - uses: actions/upload-artifact@v2
+      with:
+        name: test-output
+        path: ${{ inputs.outputPath }}
