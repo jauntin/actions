@@ -1,0 +1,26 @@
+{
+  "name": "delete-old-images-action",
+  "version": "1.0.0",
+  "description": "Delete old images",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint . && prettier --check .",
+    "test": "jest --inject-globals false",
+    "build": "ncc build index.js --license licenses.txt"
+  },
+  "author": "Jauntin",
+  "license": "ISC",
+  "dependencies": {
+    "@actions/core": "^1.3.0",
+    "@actions/github": "^5.0.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.28.6",
+    "eslint": "^7.27.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.3",
+    "jest": "^27.0.2",
+    "prettier": "^2.3.0"
+  }
+}
