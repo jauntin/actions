@@ -1,0 +1,12 @@
+name: Test Delete Old Images
+on:
+  push:
+    paths:
+      - "delete-old-images/**"
+jobs:
+  Test-Delete-Old-Images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - shell: bash
+        run: cd delete-old-images && npm install && npm test
