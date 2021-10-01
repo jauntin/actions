@@ -1,6 +1,10 @@
 name: "Deploy to Cloudfront"
 description: "Uploads build to S3 and cloudfront with appropriate setup, invalidations, etc"
 inputs:
+  path:
+    description: "Path to copy"
+    required: false
+    default: build
   aws-access-key-id:
     description: "AWS Access Key ID"
     required: true
@@ -11,13 +15,13 @@ inputs:
     description: "AWS Region"
     required: false
     default: us-east-2
-  path:
-    description: "Path to copy"
-    required: false
-    default: build
   s3-bucket-name:
     description: "S3 Bucket Name"
     required: true
+  s3-path:
+    description: "Path on S3 - use leading slash"
+    required: false
+    default: "/"
   cloudfront-distribution-id:
     description: "Cloudfront Distribution ID"
     required: true
@@ -31,5 +35,5 @@ runs:
         aws-region: ${{ inputs.aws-region }}
     - shell: bash
       run: |
-        aws s3 cp ${{ inputs.path }} s3://${{ inputs.s3-bucket-name }} --recursive --include "*"
-        aws cloudfront create-invalidation --distribution-id ${{ inputs.cloudfront-distribution-id }} --paths "/*"
+        aws s3 cp ${{ inputs.path }} s3://${{ inputs.s3-bucket-name }}${{ inputs.s3-path }} --recursive --include "*"
+        aws cloudfront create-invalidation --distribution-id ${{ inputs.cloudfront-distribution-id }} --paths "${{ inputs.s3-path }}*"
