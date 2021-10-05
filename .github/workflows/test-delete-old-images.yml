@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - "delete-old-images/**"
+      - ".github/workflows/test-delete-old-images.yml"
 jobs:
   Test-Delete-Old-Images:
     runs-on: ubuntu-latest

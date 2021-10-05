@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - "find-environment/**"
+      - ".github/workflows/test-find-environment.yml"
 jobs:
   Test-Find-Environment:
     runs-on: ubuntu-latest
@@ -10,33 +11,33 @@ jobs:
       matrix:
         include:
           - event-name: workflow_dispatch
-            ref: master
+            ref: refs/heads/master
             env: prod
             env-long: production
             cluster: Prod
           - event-name: push
-            ref: dev
+            ref: refs/heads/dev
             env: dev
             env-long: dev
             cluster: Dev
           - event-name: push
-            ref: dev-adhoc-hello
+            ref: refs/heads/dev-adhoc-hello
             env: dev
             env-long: dev
             cluster: Dev
           - event-name: push
-            ref: master
+            ref: refs/heads/master
             env: uat
             env-long: uat
             cluster: Dev
           - event-name: push
-            ref: uat-adhoc-hello
+            ref: refs/heads/uat-adhoc-hello
             env: uat
             env-long: uat
             cluster: Dev
           # Confirm default works correctly
           - event-name: other
-            ref: sodifjpoi
+            ref: refs/heads/sodifjpoi
             env: dev
             env-long: dev
             cluster: Dev

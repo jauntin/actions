@@ -25,7 +25,7 @@ runs:
       run: |
         if [[ "${{ inputs.event-name }}" == "workflow_dispatch" ]]; then
           export DEPLOY_ENV="prod"
-        elif [[ "${{ inputs.ref }}" == master || "${{ inputs.ref }}" == uat* ]]; then
+        elif [[ "${{ inputs.ref }}" == refs/heads/master || "${{ inputs.ref }}" == refs/heads/uat* ]]; then
           export DEPLOY_ENV="uat"
         else
           export DEPLOY_ENV="dev"
