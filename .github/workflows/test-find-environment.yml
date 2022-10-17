@@ -42,7 +42,7 @@ jobs:
             env-long: dev
             cluster: Dev
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - id: prod
         uses: ./find-environment
         with:

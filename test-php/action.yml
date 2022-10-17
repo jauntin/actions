@@ -17,11 +17,11 @@ outputs: {}
 runs:
   using: "composite"
   steps:
-    - uses: actions/cache@v2
+    - uses: actions/cache@v3
       with:
         path: /app/.composer
         key: test-cache
-    - uses: actions/cache@v2
+    - uses: actions/cache@v3
       with:
         path: |
           /app/.phpstan.result.cache
@@ -29,7 +29,7 @@ runs:
         key: test-cache-${{ inputs.tag }}
     - shell: sh
       run: ${{ inputs.cmd }}
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: test-output
         path: ${{ inputs.outputPath }}
