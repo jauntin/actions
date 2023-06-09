@@ -1,0 +1,52 @@
+name: "Setup PHP testing environment"
+description: "Sets up PHP testing with correct extensions and caching"
+inputs:
+  php-version:
+    description: "PHP version e.g. 8.1"
+    default: "8.1"
+  extensions:
+    description: "comma separated list of extensions to load"
+    default: mbstring, dom, fileinfo, mysql, pcov, intl, zip
+  working-directory:
+    description: "Path to tests"
+    default: '.'
+runs:
+  using: "composite"
+  steps:
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ inputs.php-version }}
+          extensions: ${{ inputs.extensions }}
+          key: extension-cache-${{ inputs.php-version }}
+      - name: Cache extensions
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ inputs.php-version }}
+          extensions: ${{ inputs.extensions }}
+          coverage: pcov
+
+      - name: Get composer cache directory
+        id: composer-cache
+        shell: bash
+        working-directory: ${{ inputs.working-directory }}
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      - name: Cache composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        shell: bash
+        working-directory: ${{ inputs.working-directory }}
+        run: composer install --no-progress --prefer-dist --no-ansi --no-interaction --optimize-autoloader
