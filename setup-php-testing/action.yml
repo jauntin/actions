@@ -34,11 +34,18 @@ runs:
           extensions: ${{ inputs.extensions }}
           coverage: pcov
 
+      - name: Setup problem matchers
+        shell: bash
+        run: |
+            echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+            echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
       - name: Get composer cache directory
         id: composer-cache
         shell: bash
         working-directory: ${{ inputs.working-directory }}
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
       - name: Cache composer dependencies
         uses: actions/cache@v3
         with:
