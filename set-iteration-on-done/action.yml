@@ -1,0 +1,28 @@
+name: 'Set iteration on done'
+description: 'Automatically move issues to the next iteration.'
+branding:
+  icon: 'calendar'
+  color: 'blue'
+inputs:
+  owner:
+    description: The account name of the GitHub organization.
+    default: jauntin
+    required: true
+  number:
+    description: Project number as you see it in the URL of the project.
+    default: '4'
+    required: true
+  token:
+    description: Personal access token or an OAuth token. the write:org scope is required for read-write access.
+    required: true
+  iterationField:
+    description: The name of your iteration field.
+    default: Iteration
+    required: true
+  status:
+    description: Status of the issues to move to the next iteration.
+    default: "✅ Done"
+    required: true
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
