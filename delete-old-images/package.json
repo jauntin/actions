@@ -2,7 +2,7 @@
   "name": "delete-old-images-action",
   "version": "1.0.0",
   "description": "Delete old images",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "lint": "eslint . && prettier --check .",
     "test": "jest --inject-globals false",
