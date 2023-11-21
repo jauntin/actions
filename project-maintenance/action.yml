@@ -1,4 +1,4 @@
-name: 'Set iteration on done'
+name: 'Project maintenance automation'
 description: 'Automatically move issues to the next iteration.'
 branding:
   icon: 'calendar'
@@ -15,13 +15,21 @@ inputs:
   token:
     description: Personal access token or an OAuth token. the write:org scope is required for read-write access.
     required: true
-  iterationField:
+  iterationFieldName:
     description: The name of your iteration field.
     default: Iteration
     required: true
-  status:
-    description: Status of the issues to move to the next iteration.
+  statusFieldName:
+    description: Usually 'Status'
+    default: 'Status'
+    required: true
+  doneStatusName:
+    description: Status of the issues to move to the current iteration.
     default: "✅ Done"
+    required: true
+  daysToKeepOnDone:
+    description: The number of days to keep items in the done column without any updates
+    default: '50'
     required: true
 runs:
   using: 'node20'
