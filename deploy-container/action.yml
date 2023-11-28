@@ -51,7 +51,7 @@ runs:
         registry: ghcr.io
         username: ${{ inputs.github-username }}
         password: ${{ inputs.github-password }}
-    - uses: aws-actions/amazon-ecr-login@v1
+    - uses: aws-actions/amazon-ecr-login@v2
     - shell: sh
       run: |
         aws ecr describe-repositories --repository-names ${{ inputs.aws-repository-name }} --region ${{ inputs.aws-region }} || aws ecr create-repository --repository-name ${{ inputs.aws-repository-name }} --region ${{ inputs.aws-region }}
