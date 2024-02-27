@@ -42,7 +42,7 @@ const getAllPackageVersions = async function (octokit, owner, name) {
       org: owner,
       state: "active",
       per_page: 100,
-    }
+    },
   )) {
     for (const packageVersion of response.data) {
       packageVersions.push(packageVersion);

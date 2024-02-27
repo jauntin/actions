@@ -12,7 +12,7 @@ async function run() {
       octokit,
       config.owner,
       config.name,
-      config.seconds
+      config.seconds,
     );
   } catch (error) {
     core.setFailed(error);

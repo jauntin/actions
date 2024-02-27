@@ -4,7 +4,7 @@ module.exports = {
     es2021: true,
   },
   ignorePatterns: ["dist/**/*"],
-  extends: ["airbnb-base", "prettier"],
+  extends: ["prettier"],
   settings: {
     "import/resolver": {
       node: {
