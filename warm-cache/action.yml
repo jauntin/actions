@@ -1,0 +1,11 @@
+name: 'Warm WP Engine Cache'
+description: 'Warm up the cache for a WP Engine site by accessing all URLs in the sitemap.'
+inputs:
+  root_sitemap_url:
+    description: 'Root sitemap URL'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.root_sitemap_url }}
