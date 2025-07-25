@@ -55,9 +55,7 @@ runs:
     - shell: sh
       run: |
         aws ecr describe-repositories --repository-names ${{ inputs.aws-repository-name }} --region ${{ inputs.aws-region }} || aws ecr create-repository --repository-name ${{ inputs.aws-repository-name }} --region ${{ inputs.aws-region }}
-        docker pull "ghcr.io/${{ inputs.github-repository-location }}:${{ inputs.tag }}"
-        docker tag "ghcr.io/${{ inputs.github-repository-location }}:${{ inputs.tag }}" "${{ inputs.aws-repository-domain }}/${{ inputs.aws-repository-name}}:${{ inputs.tag }}"
-        docker push "${{ inputs.aws-repository-domain }}/${{ inputs.aws-repository-name}}:${{ inputs.tag}}"
+        docker buildx imagetools create -t "${{ inputs.aws-repository-domain }}/${{ inputs.aws-repository-name}}:${{ inputs.tag }}" "ghcr.io/${{ inputs.github-repository-location }}:${{ inputs.tag }}"
     - shell: sh
       run: |
         aws eks --region ${{ inputs.aws-region }} update-kubeconfig --name ${{ inputs.cluster }}
