@@ -1,0 +1,32 @@
+# action.yml
+name: 'Docker Run Action'
+description: 'Run a command in a new container'
+inputs:
+  image:
+    description: 'Image'
+    required: true
+  options:
+    description: 'Options'
+    required: false
+  run:
+    description: 'Run command in container'
+    required: false
+  shell:
+    description: 'Use a specific shell'
+    required: false
+    default: sh
+runs:
+  using: composite
+  steps:
+    - name: Run Docker Container
+      shell: sh
+      run: |
+        docker run --rm \
+        ${{ job.container.network && format('--network {0}', job.container.network) || '' }} \
+        -e CI=true \
+        -e GITHUB_ACTIONS=true \
+        ${{ inputs.options }} \
+        --entrypoint=${{ inputs.shell }} \
+        ${{ inputs.image }} -c "
+        ${{ inputs.run }}
+        "
